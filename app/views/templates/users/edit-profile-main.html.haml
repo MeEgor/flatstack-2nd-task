@@ -1,0 +1,18 @@
+.contaiber
+  .row
+    .col-lg-offset-3.col-lg-6
+      = render 'shared/user_profile_header'
+
+      %h2 Редактирование профиля {{ current_user.name }}
+      %form{:action => ""}
+
+        .attr-container
+          %span.attr-label Имя
+          %input.form-control{:type => "text", 'ng-model' => 'current_user.name'}/
+
+        .attr-container
+          %span.attr-label e-mail
+          %input.form-control{:type => "text", 'ng-model' => 'current_user.email'}/
+
+        .well
+          %button.btn.btn-success{'ng-click' => 'update()'} Сохранить изменения

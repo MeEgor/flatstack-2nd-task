@@ -1,0 +1,12 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "E-mail занят."
+      messages:
+        blank: "Не может быть пустым."
+        too_short: "Слишком короткий. Минимуи %{count} символов."
+        confirmation: "Пароли не совпадают."

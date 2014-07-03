@@ -1,0 +1,21 @@
+%nav.navbar.navbar-default{:role => 'navigation'}
+  .container-fluid
+    .navbar-header
+      = link_to 'Календарь', root_path, :class => 'navbar-brand'
+
+    %ul.nav.navbar-nav{'ng-if' => 'current_user'}
+      %li{ 'ng-class' => '{active: urlContains("/profile")}' }
+        = link_to 'Профиль', '/#/profile'
+      %li
+        = link_to 'Мой календарь', '#'
+
+    %ul.nav.navbar-nav.pull-right{'ng-if' => 'current_user', 'ng-controller' => 'SessionCtrl'}
+      %li
+        %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => 'current_user.name'} Log out ({{ current_user.name }})
+        %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => '!current_user.name'} Log out
+
+    %ul.nav.navbar-nav.pull-right{'ng-if' => '!current_user'}
+      %li
+        = link_to 'Войти', '/#/sign_in'
+      %li
+        = link_to 'Зарегестрироваться', '/#/sign_up'

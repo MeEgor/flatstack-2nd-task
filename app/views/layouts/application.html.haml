@@ -1,0 +1,25 @@
+<!doctype html>
+%html{:lang => "en"}
+%head
+  %meta{:charset => "UTF-8"}/
+  %title Flashtrack
+  = stylesheet_link_tag "application", media: "all"
+  = javascript_include_tag "application"
+  = csrf_meta_tags
+%body{'ng-app' => 'MyCalendar'}
+  %div#growl-container{'growl' => ''}
+  .container{'ng-controller' => 'MainCtrl'}
+    .row
+      .col-lg-12
+        = render 'shared/header'
+
+        - flash.each do |name, msg|
+          %div{:class => "alert alert-#{name}"}
+            %button.close{ "data-dismiss" => "alert" }
+              %span{ "aria-hidden" => "true" } &times;
+            = msg
+
+    .row
+      .col-lg-12
+        = yield
+

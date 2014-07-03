@@ -1,0 +1,17 @@
+.contaiber
+  .row
+    .col-lg-offset-3.col-lg-6
+      = render 'shared/user_profile_header'
+      %h2 Профиль пользователя {{ current_user.name }}
+
+      .attr-container
+        %span.attr-label Имя
+        {{ current_user.name }}
+
+      .attr-container
+        %span.attr-label e-mail
+        {{ current_user.email }}
+
+      .attr-container
+        %span.attr-label События: 2
+        %a{:href => "#"} Все события

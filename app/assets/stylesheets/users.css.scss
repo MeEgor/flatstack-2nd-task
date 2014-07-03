@@ -1,0 +1,37 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.attr-container{
+  position: relative;
+  margin: 15px 0;
+  padding: 39px 19px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  span.attr-label{
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #3a87ad;
+    border: 1px solid #ddd;
+    color: #fff;
+    -webkit-border-radius: 4px 0 4px 0;
+    -moz-border-radius: 4px 0 4px 0;
+    border-radius: 4px 0 4px 0;
+  }
+}
+div.attr-container.errors{
+  background-color: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
+  span.attr-label{
+    background-color: #b94a48;
+    border-color: #eed3d7;
+  }
+}

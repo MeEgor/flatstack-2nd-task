@@ -1,0 +1,34 @@
+.contaiber
+  .row
+    .col-lg-offset-3.col-lg-6
+      %h2 Регистрация
+
+      %form.form-horizontal{:action => ""}
+
+        %div.form-group{'ng-class' =>'{"has-error" : has_error("email")}'}
+          %label.col-lg-4.control-label{:for => "user_email"} Email:
+          .col-lg-8
+            %input#user_email.form-control{:type => "text", 'ng-model' => 'user.email', :autofocus => true}
+            %div.errors{'ng-if' => 'has_error("email")'}
+              %p.help-block{'ng-repeat' => 'error in registration_errors.email'}
+                {{ error }}
+
+        %div.form-group{'ng-class' =>'{"has-error" : has_error("password")}'}
+          %label.col-lg-4.control-label{:for => "user_password"} Пароль:
+          .col-lg-8
+            %input#user_password.form-control{:type => "password", 'ng-model' => 'user.password'}
+            %div.errors{'ng-if' => 'has_error("password")'}
+              %p.help-block{'ng-repeat' => 'error in registration_errors.password'}
+                {{ error }}
+
+        %div.form-group{'ng-class' =>'{"has-error" : has_error("password_confirmation")}'}
+          %label.col-lg-4.control-label{:for => "user_password_confirmation"} Повторите пароль:
+          .col-lg-8
+            %input#user_password_confirmation.form-control{:type => "password", 'ng-model' => 'user.password_confirmation'}
+            %div.errors{'ng-if' => 'has_error("password_confirmation")'}
+              %p.help-block{'ng-repeat' => 'error in registration_errors.password_confirmation'}
+                {{ error }}
+
+        %div.form-group
+          .col-lg-offset-4.col-lg-8
+            %button.btn.btn-default{'ng-click' => 'register()'} Регистрация

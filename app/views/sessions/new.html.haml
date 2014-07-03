@@ -1,0 +1,20 @@
+.contaiber
+  .row
+    .col-lg-offset-3.col-lg-6
+      %h2 Вход
+
+      = form_for(:session, url: sessions_path, :html => { :class => 'form-horizontal' }) do |f|
+
+        %div.form-group
+          = f.label :email, 'Email:', class: 'col-lg-2 control-label'
+          .col-lg-8
+            = f.text_field :email, :autofocus => true, :class => 'form-control'
+
+        %div.form-group
+          = f.label :password, 'Пароль:', class: 'col-lg-2 control-label'
+          .col-lg-8
+            = f.password_field :password, :class => 'form-control'
+
+        %div.form-group
+          .col-lg-offset-2.col-lg-8
+            = f.submit "Войти", class: 'btn btn-default'

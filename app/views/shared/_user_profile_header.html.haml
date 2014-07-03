@@ -1,0 +1,7 @@
+%ul.nav.nav-tabs
+  %li{'ng-class' => '{ active : isUrl("/profile") }'}
+    %a{:href => "/#/profile"} Профиль
+  %li{'ng-class' => '{ active : isUrl("/profile/edit/main") }'}
+    %a{:href => "/#/profile/edit/main"} Редактировать профиль
+  %li{'ng-class' => '{ active : isUrl("/profile/edit/password") }'}
+    %a{:href => "/#/profile/edit/password"} Смена пароля

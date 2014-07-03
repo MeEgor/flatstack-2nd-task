@@ -12,5 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+//= require bootstrap
+//= require bootstrap-datepicker
+//= require angular
+//= require angular-route
+//= require angular-growl
+//= require ng/ng
+//= require_tree ./ng/controllers
+//= require_tree ./ng/services
+
