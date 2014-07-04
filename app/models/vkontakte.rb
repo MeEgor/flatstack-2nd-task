@@ -11,7 +11,7 @@ class Vkontakte
     @@client_id = 4445461
 
   elsif Rails.env.production?
-    @@redirect_uri = 'http://damp-oasis-6053.herokuapp.com/vk-auth'
+    @@redirect_uri = 'http://stark-beyond-6385.herokuapp.com/vk-auth'
     @@secret = 'lTJhjBbVnu4ZRNWRvMUr'
     @@client_id = 4445461
   end
