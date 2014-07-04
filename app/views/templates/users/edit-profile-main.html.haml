@@ -6,13 +6,20 @@
       %h2 Редактирование профиля {{ current_user.name }}
       %form{:action => ""}
 
-        .attr-container
+        .attr-container{'ng-class' =>'{"has-error" : has_error("name")}'}
           %span.attr-label Имя
           %input.form-control{:type => "text", 'ng-model' => 'current_user.name'}/
+          %div.errors{'ng-if' => 'has_error("email")'}
+            %p.help-block{'ng-repeat' => 'error in update_errors.name'}
+              {{ error }}
 
-        .attr-container
+
+        .attr-container{'ng-class' =>'{"has-error" : has_error("email")}'}
           %span.attr-label e-mail
           %input.form-control{:type => "text", 'ng-model' => 'current_user.email'}/
+          %div.errors{'ng-if' => 'has_error("email")'}
+            %p.help-block{'ng-repeat' => 'error in update_errors.email'}
+              {{ error }}
 
         .well
           %button.btn.btn-success{'ng-click' => 'update()'} Сохранить изменения

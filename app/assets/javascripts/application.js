@@ -14,10 +14,12 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap-datepicker
+//= require moment
 //= require angular
-//= require angular-route
+//= require angular-ui-router
 //= require angular-growl
 //= require ng/ng
 //= require_tree ./ng/controllers
 //= require_tree ./ng/services
+//= require_tree ./ng/directives
 

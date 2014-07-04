@@ -1,0 +1,17 @@
+%h2.calendar-header
+  %a{:href => "{{ prev_month.link }}"}
+    {{ prev_month.name }}
+
+  {{ date }}
+
+  %a{:href => "{{ next_month.link }}"}
+    {{ next_month.name }}
+
+.calendar
+  %a.day{:href => "{{ link_to_day(day.day) }}", 'ng-repeat' => 'day in days', 'ng-class' => '{"day-before": day.before, "weekend": day.weekend, "today": day.today}'}
+    %header
+      {{ day.day }}
+    {{ day_name( day.day ) }}
+    %p
+      {{ humanize_events_count(day.events) }}
+

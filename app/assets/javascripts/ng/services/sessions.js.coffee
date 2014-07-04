@@ -32,6 +32,7 @@ angular
           $http
             .get '/current_user.json'
             .then (resp)->
+              # debugger
               service.currentUser = resp.data.user
               service.currentUser
 

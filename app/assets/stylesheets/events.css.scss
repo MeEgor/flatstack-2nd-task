@@ -1,0 +1,73 @@
+// Place all the styles related to the events controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+h2.calendar-header{
+  text-align: center;
+
+  a{
+    font-size: 16px;
+    display: inline-block;
+    width: 150px;
+
+    &:last-child{
+      text-align: right;
+    }
+  }
+}
+
+.calendar{
+  width: 770px;
+  overflow: hidden;
+  margin: 0 auto;
+
+  a.day{
+    height: 96px;
+    width: 106px;
+    margin: 2px;
+    padding: 8px;
+    background: #fff;
+    float: left;
+    color: black;
+    border: 1px solid #ccc;
+    display: block;
+    text-decoration: none;
+
+    &:hover{
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #000;
+    }
+
+    &.day-before{
+      background-color: transparent;
+      color: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      cursor: default;
+    }
+
+    &.weekend {
+      background: #d9534f;
+      border-color: #d43f3a;
+      color: #fff;
+    }
+
+    &.today{
+      background-color: #5cb85c;
+      border-color: #4cae4c;
+      color: #fff;
+    }
+
+    header {
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+  }
+
+
+}

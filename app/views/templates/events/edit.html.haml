@@ -1,0 +1,34 @@
+%h2 Редактировать событие
+
+.row
+  .col-lg-offset-2.col-lg-6
+    .attr-container{'ng-class' =>'{"has-error" : has_error("name")}'}
+      %span.attr-label Событие
+
+      %form.form-horizontal{:action => ""}
+
+        %div.form-group{'ng-class' =>'{"has-error" : has_error("name")}'}
+          %label.col-lg-4.control-label{:for => "event_name"} Название:
+          .col-lg-8
+            %input#event_name.form-control{:type => "text", 'ng-model' => 'event.name', :autofocus => true}
+            %div.errors{'ng-if' => 'has_error("name")'}
+              %p.help-block{'ng-repeat' => 'error in update_errors.name'}
+                {{ error }}
+
+        %div.form-group{'ng-class' =>'{"has-error" : has_error("started_at")}'}
+          %label.col-lg-4.control-label{:for => "event_started_at"} Дата:
+          .col-lg-8
+            %input#event_started_at.form-control{:type => "text", 'ng-model' => 'event.started_at', 'datepicker' => ''}
+            %div.errors{'ng-if' => 'has_error("started_at")'}
+              %p.help-block{'ng-repeat' => 'error in update_errors.started_at'}
+                {{ error }}
+
+        %div.form-group
+          %label.col-lg-4.control-label{:for => "event_period"} Период:
+          .col-lg-8
+            %select#event_period.form-control{'ng-model' => 'event.period', 'ng-options' => 'period.code as period.name for period in periods'}
+
+        %div.form-group
+          .col-lg-offset-4.col-lg-8
+            %button.btn.btn-default{'ng-click' => 'update()'} Обновить
+

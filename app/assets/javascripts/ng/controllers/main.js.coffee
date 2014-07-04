@@ -1,10 +1,11 @@
 # главный контроллер
 angular
   .module 'MyCalendar'
-  .controller 'MainCtrl', ['$scope', 'Session', 'growl', '$location', (scope, Session, growl, location)->
-    console.log 'MainCtrl -> start'
-
+  .controller 'MainCtrl', ['$scope', 'Session', 'growl', '$location', '$stateParams', '$state',
+  (scope, Session, growl, location, stateParams, state)->
     scope.current_user = null
+
+    scope.link_to_calendar = "/#/#{moment().format('YYYY/MM')}"
 
     scope.set_current_user = (user)->
       scope.current_user = user

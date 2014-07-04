@@ -13,6 +13,7 @@ gem 'whenever'
 gem 'haml'
 gem 'haml-rails'
 gem 'cancan'
+gem 'rabl'
 
 group :development do
   gem 'sqlite3'

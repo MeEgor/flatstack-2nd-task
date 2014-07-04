@@ -23,7 +23,6 @@ class SessionsController < ApplicationController
   end
 
   def show_current_user
-    user = current_user
-    render :json => {:success => true, info: 'current_user', user: current_user}, status: 200
+    @user = current_user
   end
 end

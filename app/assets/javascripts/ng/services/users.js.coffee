@@ -11,7 +11,7 @@ angular
 
       register: (email, password, confirm_password)->
         $http
-          .post '/users',
+          .post '/users.json',
             user:
               email: email
               password: password
@@ -19,10 +19,19 @@ angular
 
       update: (user)->
         $http
-          .put "/users/#{user.id}", user
-          .then (resp)->
-            if resp.data.success
-              resp
+          .put "/users/#{user.id}.json", user
+
+      send_confirmation_email: (id)->
+        $http
+          .post "/users/#{id}/send_confirmation_email.json"
+
+      verify_email: (token)->
+        $http
+          .post "/users/confirm_email/#{ token }.json"
+
+      change_password: (user)->
+        $http
+          .post "/users/#{user.id}/change_password.json", user: user
 
 
 

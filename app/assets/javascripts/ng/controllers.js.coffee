@@ -6,8 +6,6 @@ angular
   .controller 'UserCtrl', ['$scope', 'growl', '$location', 'User', 'Session', (scope, growl, location, User, Session)->
     console.log 'UsersCtrl -> start'
 
-
-
     scope.update = ()->
       User
         .update scope.current_user

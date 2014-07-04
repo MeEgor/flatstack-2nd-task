@@ -1,0 +1,47 @@
+%h2 События сегоднешнего дня. ({{ date }})
+
+%div{ 'ng-if' => 'events.length > 0' }
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Название
+        %th Периодичность
+        %th День запуска
+        %th
+    %tbody
+      %tr{'ng-repeat' => 'event in events'}
+        %td
+          %a{:href => "#/events/{{ event.id }}/edit"}
+            {{ event.name }}
+        %td {{ event.period }}
+        %td {{ event.started_at | date:'dd/MM/yyyy' }}
+        %td
+          %button.btn.btn-danger.btn-sm{'ng-click' => 'delete_event(event.id)'}
+            Удалить
+
+%div{ 'ng-if' => 'events.length == 0' }
+  На сегодня событий нет. Может стоит добавить?
+
+.row
+  .col-lg-offset-2.col-lg-6
+    .attr-container{'ng-class' =>'{"has-error" : has_error("name")}'}
+      %span.attr-label Добавить новое событие
+
+      %form.form-horizontal{:action => ""}
+
+        %div.form-group{'ng-class' =>'{"has-error" : has_error("name")}'}
+          %label.col-lg-4.control-label{:for => "event_name"} Название:
+          .col-lg-8
+            %input#event_name.form-control{:type => "text", 'ng-model' => 'new_event.name', :autofocus => true}
+            %div.errors{'ng-if' => 'has_error("name")'}
+              %p.help-block{'ng-repeat' => 'error in creation_errors.name'}
+                {{ error }}
+
+        %div.form-group
+          %label.col-lg-4.control-label{:for => "event_period"} Период:
+          .col-lg-8
+            %select#event_period.form-control{'ng-model' => 'new_event.period', 'ng-options' => 'period.code as period.name for period in periods'}
+
+        %div.form-group
+          .col-lg-offset-4.col-lg-8
+            %button.btn.btn-default{'ng-click' => 'create_event()'} Создать

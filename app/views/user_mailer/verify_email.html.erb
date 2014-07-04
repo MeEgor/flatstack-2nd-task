@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Подтверждение e-mail</h1>
+    <p>
+      Для подтверждения вашего e-mail перейдите по ссылке: <a href="<%= @verify_email_url %>"><%= @verify_email_url %></a><br>
+      Ссылка работает в течении трех дней с момента отправки.
+    </p>
+    <p>
+      Если вы не запрашиывали подтверждения e-mail, просто игнорируйте это сообщение.
+    </p>
+    <p>
+      С уважением, администрация сайта <a href="<%= @url %>">Календарь</a>
+    </p>
+  </body>
+</html>

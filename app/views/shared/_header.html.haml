@@ -7,12 +7,12 @@
       %li{ 'ng-class' => '{active: urlContains("/profile")}' }
         = link_to 'Профиль', '/#/profile'
       %li
-        = link_to 'Мой календарь', '#'
+        %a{:href => "{{ link_to_calendar }}", 'ng-class' => '{active: $state.current.name == "month"}'} Мой календарь
 
     %ul.nav.navbar-nav.pull-right{'ng-if' => 'current_user', 'ng-controller' => 'SessionCtrl'}
       %li
-        %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => 'current_user.name'} Log out ({{ current_user.name }})
-        %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => '!current_user.name'} Log out
+        %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => 'current_user.name'} Выйти ({{ current_user.name }})
+        %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => '!current_user.name'} Выйти
 
     %ul.nav.navbar-nav.pull-right{'ng-if' => '!current_user'}
       %li

@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
+  # события
+  resources :events, :only => [:create, :update, :show, :destroy]
+  get '/events/day/:date' => 'events#day'
+  get '/events/month/:date' => 'events#month'
+
   # пользователи
   resources :users, :only => [:create, :show, :update, :destroy]
+  post '/users/:id/send_confirmation_email' => 'users#send_verify_email'
+  post '/users/confirm_email/:token' => 'users#confirm_email'
+  post '/users/:id/change_password' => 'users#change_password'
 
   # сесии
   resources :sessions, :only => [:create]
