@@ -5,8 +5,8 @@ class UserMailer < ActionMailer::Base
     @user = user
     if Rails.env.development?
       @url  = 'http://localhost:3000'
-    else
-      @url = 'http://damp-oasis-6053.herokuapp.com'
+    elsif Rails.env.production?
+      @url = 'http://stark-beyond-6385.herokuapp.com/'
     end
 
     mail(to: @user.email, subject: 'Добро пожаловать на "Дарим вместе"')
@@ -15,8 +15,8 @@ class UserMailer < ActionMailer::Base
   def verify_email user
     if Rails.env.development?
       @url = 'http://localhost:3000'
-    else
-      @url = 'http://damp-oasis-6053.herokuapp.com'
+    elsif Rails.env.production?
+      @url = 'http://stark-beyond-6385.herokuapp.com/'
     end
 
     @verify_email_url = "#{@url}/#/user/#{user.id}?verify_email_token=#{user.email_confirmation_token}"
