@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
   def vk_auth
     u = Vkontakte.new params[:code]
     u.load
-    user = User.find_by_vk_uid u.uid
+    user = User.find_by_vk_uid u.uid.to_s
     if user
       # войти
       sign_in user
