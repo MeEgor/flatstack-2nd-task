@@ -19,7 +19,7 @@ class UserMailer < ActionMailer::Base
       @url = 'http://damp-oasis-6053.herokuapp.com'
     end
 
-    @verify_email_url = "#{@url}/#/profile?verify_email_token=#{user.email_confirmation_token}"
+    @verify_email_url = "#{@url}/#/user/#{user.id}?verify_email_token=#{user.email_confirmation_token}"
 
     mail(to: user.email, subject: 'Подтверждение e-mail: "Календарь"')
   end

@@ -1,86 +1,95 @@
 angular
   .module 'MyCalendar'
   .controller 'SingleUserCtrl', [
-    '$scope', 'growl', '$location', 'User', 'Session', '$stateParams',
-    (scope, growl, location, User, Session, stateParams)->
-      scope.events = 0
+    '$scope', 'growl', '$location', 'User', 'Session', '$stateParams', '$state',
+    (scope, growl, location, User, Session, stateParams, state)->
+      # подтверждение email
+      # TODO вынести куда-нибудь отдельно.
       if stateParams.verify_email_token
         User
           .verify_email stateParams.verify_email_token
           .then (resp)->
             if resp && resp.data.success
               growl.addSuccessMessage 'E-mail подтвержден'
-              scope.set_current_user resp.data.user
             else
               growl.addErrorMessage "E-mail не подтвержден"
               angular.forEach resp.data.errors.email, (message)->
                 growl.addErrorMessage message
 
           .then ()->
-            location.$$search = {}
-            location.path '/profile'
+            Session
+              .requestCurrentUser()
+              .then (user)->
+                scope.set_current_user user
+                state.transitionTo 'user', { id: user.id }
 
-      Session
-        .requestCurrentUser()
-        .then (resp)->
-          unless resp
-            location.path '/sign_in'
-            growl.addErrorMessage 'Войдите, чтобы совершить действие'
-
-
+      scope.user = {}
       scope.update_errors = {}
-
       scope.has_error = (field)->
         scope.update_errors.hasOwnProperty field
 
-      scope.mouseover = (e)->
-        e.currentTarget.innerHTML = "Подтвердить"
 
-      scope.mouseleave = (e)->
-        e.currentTarget.innerHTML = "Не подтвержден"
+      load_user = ()->
+        User
+          .show stateParams.id
+          .then (resp)->
+            scope.user = resp.data.user
+            console.log 'user loaded'
+          , (resp)->
+              console.log 'user not loaded'
 
       scope.update = ()->
         User
-          .update scope.current_user
+          .update scope.user
           .then (resp)->
             if resp && resp.data.success
-              scope.set_current_user resp.data.user
-              if scope.current_user.name
-                growl.addSuccessMessage "С обновлением вас, #{ scope.current_user.name }!"
-              else
-                growl.addSuccessMessage "Обновление прошло удачно."
-              location.path '/profile'
-
+              Session
+                .requestCurrentUser()
+                .then (user)->
+                  scope.set_current_user user
+                  growl.addSuccessMessage "Обновление прошло удачно."
+                  state.transitionTo 'user', { id: scope.user.id }
             else
               scope.update_errors = resp.data.errors
               growl.addErrorMessage 'Обновление не удалось.'
-          , (resp)->
-              growl.addErrorMessage 'Сервер временно не доступен. Попробуйте позже.'
 
       scope.send_confirmation_email = ()->
         growl.addInfoMessage "Отправка письма с сыллкой для подтверждения e-mail"
-        User.send_confirmation_email scope.current_user.id
+        User.send_confirmation_email scope.user.id
         .then (resp)->
           if resp && resp.data.success
             growl.addSuccessMessage "Письмо отправлено!"
           else
             growl.addErrorMessage "Письмо не было отправлено."
-        , (resp)->
-            growl.addErrorMessage 'Сервер временно не доступен. Попробуйте позже.'
 
       scope.change_password = ()->
         User
-          .change_password scope.current_user
+          .change_password scope.user
           .then (resp)->
             if resp && resp.data.success
               scope.set_current_user resp.data.user
               scope.update_errors = {}
-              location.path '/profile'
               growl.addSuccessMessage "Пароль успешно изменен."
+              state.transitionTo 'user', { id: scope.user.id }
+
             else
               scope.update_errors = resp.data.errors
               growl.addErrorMessage 'Обновление не удалось.'
-          , (resp) ->
-              growl.addErrorMessage 'Сервер временно не доступен. Попробуйте позже.'
+
+      scope.create_password = ()->
+        User
+          .create_password scope.user
+          .then (resp)->
+            if resp && resp.data.success
+              scope.set_current_user resp.data.user
+              scope.update_errors = {}
+              growl.addSuccessMessage "Пароль успешно создан."
+              state.transitionTo 'user', { id: scope.user.id }
+
+            else
+              scope.update_errors = resp.data.errors
+              growl.addErrorMessage 'Пароль не создан.'
+
+      load_user()
 
   ]

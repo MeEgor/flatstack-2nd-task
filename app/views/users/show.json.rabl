@@ -7,17 +7,21 @@ child @user, root: "user", object_root: false do
     user.email_confirmed?
   end
 
+  node :has_email do |user|
+    user.has_email?
+  end
+
+  node :has_password do |user|
+    user.has_password?
+  end
+
   node :events_count do |user|
     user.events.count
   end
 end
 
-node :user, :if => !@user do
-  nil
-end
-
 node :info do
-  'cuser'
+  'user'
 end
 
 node :success do

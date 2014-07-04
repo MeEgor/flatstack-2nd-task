@@ -14,8 +14,11 @@ angular
           if !response
             growl.addErrorMessage 'Логин / Пароль не верные'
           else
-            scope.set_current_user Session.currentUser
-            growl.addSuccessMessage "Здравствуйте #{scope.current_user.name}"
+            Session
+              .requestCurrentUser()
+              .then (user)->
+                scope.set_current_user Session.currentUser
+                growl.addSuccessMessage "Здравствуйте #{scope.current_user.name}"
 
         , (response)->
             growl.addErrorMessage 'Сервер временно не доступен. Попробуйте позже.'

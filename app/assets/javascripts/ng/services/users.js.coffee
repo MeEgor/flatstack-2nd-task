@@ -1,9 +1,6 @@
 angular
   .module 'userService', []
-  .factory 'User', ($location, $http)->
-    redirect = (url)->
-      url = url || '/'
-      $location.path url
+  .factory 'User', ($location, $http, Session)->
 
     service =
       show: (id)->
@@ -22,6 +19,10 @@ angular
       update: (user)->
         $http
           .put "/users/#{user.id}.json", user
+          .then (resp)->
+            Session.currentUser = null
+            resp
+
 
       send_confirmation_email: (id)->
         $http
@@ -34,6 +35,16 @@ angular
       change_password: (user)->
         $http
           .post "/users/#{user.id}/change_password.json", user: user
+          .then (resp)->
+            Session.currentUser = null
+            resp
+
+      create_password: (user)->
+        $http
+          .post "/users/#{user.id}/create_password.json", user: user
+          .then (resp)->
+            Session.currentUser = null
+            resp
 
 
 

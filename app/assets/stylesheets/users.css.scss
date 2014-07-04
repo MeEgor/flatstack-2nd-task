@@ -27,7 +27,6 @@ div.attr-container{
     border-radius: 4px 0 4px 0;
   }
   span.notification-label{
-    cursor: pointer;
     position: absolute;
     top: -1px;
     right: -1px;
@@ -40,10 +39,6 @@ div.attr-container{
     -webkit-border-radius: 0 4px 0 4px;
     -moz-border-radius: 0 4px 0 4px;
     border-radius: 0 4px 0 4px;
-
-    &:hover{
-      background-color: #3c763d;
-    }
   }
 }
 div.attr-container.has-error{

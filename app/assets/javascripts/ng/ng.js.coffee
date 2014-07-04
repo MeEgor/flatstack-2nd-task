@@ -45,19 +45,19 @@ app
         templateUrl: 'templates/users/sign_in'
         controller: 'SessionCtrl'
 
-      .state 'profile',
-        url: '/profile?verify_email_token'
-        templateUrl: 'templates/users/profile'
+      .state 'user',
+        url: '/user/:id?verify_email_token'
+        templateUrl: 'templates/users/show'
         controller: 'SingleUserCtrl'
 
-      .state 'edit_profile',
-        url: '/profile/edit/main'
-        templateUrl: 'templates/users/edit-profile-main'
+      .state 'user_edit_main',
+        url: '/user/:id/edit'
+        templateUrl: 'templates/users/edit-main'
         controller: 'SingleUserCtrl'
 
-      .state 'edit_password',
-        url: '/profile/edit/password'
-        templateUrl: 'templates/users/edit-profile-password'
+      .state 'user_edit_password',
+        url: '/user/:id/password'
+        templateUrl: 'templates/users/edit-password'
         controller: 'SingleUserCtrl'
 
       .state 'day',
@@ -86,3 +86,5 @@ app
     $rootScope.$on '$stateChangeSuccess', (ev, to, toParams, from, fromParams) ->
       $state.previous = from
       $state.previousParams = fromParams
+
+    $rootScope.$state = $state

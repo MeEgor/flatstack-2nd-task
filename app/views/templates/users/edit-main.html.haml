@@ -3,20 +3,19 @@
     .col-lg-offset-3.col-lg-6
       = render 'shared/user_profile_header'
 
-      %h2 Редактирование профиля {{ current_user.name }}
+      %h2 Редактирование профиля {{ user.name }}
       %form{:action => ""}
 
         .attr-container{'ng-class' =>'{"has-error" : has_error("name")}'}
           %span.attr-label Имя
-          %input.form-control{:type => "text", 'ng-model' => 'current_user.name'}/
-          %div.errors{'ng-if' => 'has_error("email")'}
+          %input.form-control{:type => "text", 'ng-model' => 'user.name'}/
+          %div.errors{'ng-if' => 'has_error("name")'}
             %p.help-block{'ng-repeat' => 'error in update_errors.name'}
               {{ error }}
 
-
         .attr-container{'ng-class' =>'{"has-error" : has_error("email")}'}
           %span.attr-label e-mail
-          %input.form-control{:type => "text", 'ng-model' => 'current_user.email'}/
+          %input.form-control{:type => "text", 'ng-model' => 'user.email'}/
           %div.errors{'ng-if' => 'has_error("email")'}
             %p.help-block{'ng-repeat' => 'error in update_errors.email'}
               {{ error }}

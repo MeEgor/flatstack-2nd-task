@@ -1,0 +1,21 @@
+.contaiber
+  .row
+    .col-lg-offset-3.col-lg-6
+      = render 'shared/user_profile_header'
+      %h2 Профиль пользователя {{ user.name }}
+
+      .attr-container
+        %span.attr-label Имя
+        {{ user.name }}
+
+      .attr-container{ 'ng-if' => 'user.has_email' }
+        %span.attr-label e-mail
+        %span.notification-label{'ng-if' => '!user.email_confirmed'} не подтвержден
+        {{ user.email }}
+        %button.btn.btn-success.btn-sm{'ng-if' => '!user.email_confirmed', 'ng-click' => 'send_confirmation_email()'}
+          Подтвердить e-mail
+
+      .attr-container{ 'ng-if' => '!user.has_email' }
+        %span.attr-label e-mail
+        E-mail отсутствует, вы скорее всего зашли через "Вконтакте". Если хотите получать уведомления или иметь стандартный доступ на сайт, добавьте e-mail в настройках профиля.
+

@@ -4,10 +4,11 @@
       = link_to 'Календарь', root_path, :class => 'navbar-brand'
 
     %ul.nav.navbar-nav{'ng-if' => 'current_user'}
-      %li{ 'ng-class' => '{active: urlContains("/profile")}' }
-        = link_to 'Профиль', '/#/profile'
-      %li
-        %a{:href => "{{ link_to_calendar }}", 'ng-class' => '{active: $state.current.name == "month"}'} Мой календарь
+      %li{ 'ng-class' => '{active: $state.current.name.indexOf("user") > -1}' }
+        %a{'ui-sref' => "user({ id: current_user.id })"} Профиль
+
+      %li{ 'ng-class' => '{active: $state.current.name == "month"}' }
+        %a{:href => "{{ link_to_calendar }}"} Мой календарь
 
     %ul.nav.navbar-nav.pull-right{'ng-if' => 'current_user', 'ng-controller' => 'SessionCtrl'}
       %li
@@ -15,7 +16,8 @@
         %a{:href => "", 'ng-click' => 'logout()', 'ng-if' => '!current_user.name'} Выйти
 
     %ul.nav.navbar-nav.pull-right{'ng-if' => '!current_user'}
-      %li
-        = link_to 'Войти', '/#/sign_in'
-      %li
-        = link_to 'Зарегестрироваться', '/#/sign_up'
+      %li{ 'ng-class' => '{active: $state.current.name == "sign_in"}' }
+        %a{'ui-sref' => "sign_in"} Войти
+
+      %li{ 'ng-class' => '{active: $state.current.name == "sign_up"}' }
+        %a{'ui-sref' => "sign_up"} Зарегистрироваться

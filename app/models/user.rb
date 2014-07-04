@@ -1,12 +1,17 @@
 class User < ActiveRecord::Base
   has_secure_password :validations => false
-  attr_accessor :password_confirmation, :email_was, :current_password, :skip_password_validation
+  attr_accessor :password_confirmation, :email_was, :current_password, :skip_password_validation, :skip_email_validation
 
   has_many :events, :dependent => :destroy
 
-  validates :email, presence: true, uniqueness: true
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-
+  # e-mail не обязателен, если привязана учетка ВК
+  VALID_EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates :email, {
+    presence: true,
+    uniqueness: true,
+    :unless => lambda { |user| user.has_vk? || user.skip_email_validation }
+  }
+  validates :email, :format => {:with => VALID_EMAIL_REGEX}, :if => lambda { |user| user.has_email? }
 
   validates :password,  presence: true, length: { minimum: 5 }, :unless => :skip_password_validation
   validates :password_confirmation, presence: true, :unless => :skip_password_validation
@@ -15,7 +20,7 @@ class User < ActiveRecord::Base
   # если email есть, то dfowncase
   before_save { self.email = email.downcase if !email.nil? }
   before_create :create_remember_token
-  before_create :create_email_confirmation_token, :if => 'has_email?'
+  before_create :create_email_confirmation_token
 
   before_update :create_email_confirmation_token, :if => 'email_changed?'
 
@@ -24,6 +29,10 @@ class User < ActiveRecord::Base
   def events_at_day date
     events = self.events.where 'events.started_at = ? OR (events.started_at <= ? AND events.period != 0)', date, date
     events.to_a.delete_if{ |e| !e.filter date }
+  end
+
+  def has_password?
+    !self.password_digest.blank?
   end
 
   def events_at_month date
@@ -46,15 +55,15 @@ class User < ActiveRecord::Base
   end
 
   def has_vk?
-    !self.vk_uid.nil?
+    !self.vk_uid.blank?
   end
 
   def has_email?
-    !self.email.nil?
+    !self.email.blank?
   end
 
   def email_confirmed?
-    !self.email.nil? && self.email_confirmation_token.nil? && self.email_confirmation_token_expiration_date.nil?
+    !self.email.blank? && self.email_confirmation_token.blank? && self.email_confirmation_token_expiration_date.blank?
   end
 
   def send_confirm_email
@@ -89,6 +98,12 @@ class User < ActiveRecord::Base
 
   def email_changed?
     self.email != self.email_was
+  end
+
+  def create_password params
+    self.password = params[:password]
+    self.password_confirmation = params[:password_confirmation]
+    self.save
   end
 
   def change_password params

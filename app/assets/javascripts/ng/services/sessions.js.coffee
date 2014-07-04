@@ -1,6 +1,7 @@
 angular
   .module 'sessionService', []
   .factory 'Session', ($location, $http, $q)->
+
     redirect = (url)->
       url = url || '/'
       $location.path url
@@ -13,7 +14,7 @@ angular
               email: email
               password: password
           .then (resp)->
-            service.currentUser = resp.data.user
+            service.currentUser = resp.data.current_user
             if service.isSignedIn()
               redirect()
 
@@ -32,8 +33,7 @@ angular
           $http
             .get '/current_user.json'
             .then (resp)->
-              # debugger
-              service.currentUser = resp.data.user
+              service.currentUser = resp.data.current_user
               service.currentUser
 
       currentUser: null
