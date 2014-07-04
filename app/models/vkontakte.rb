@@ -5,13 +5,23 @@ class Vkontakte
   attr_reader :user, :errors, :uid
   attr_accessor :code
 
-  @@client_id = 4445461
-  @@redirect_uri = 'http://localhost:3000/vk-auth'
+  if Rails.env.development?
+    @@redirect_uri = 'http://localhost:3000/vk-auth'
+    @@secret = 'lTJhjBbVnu4ZRNWRvMUr'
+    @@client_id = 4445461
+
+  elsif Rails.env.production?
+    @@redirect_uri = 'http://damp-oasis-6053.herokuapp.com/vk-auth'
+    @@secret = 'lTJhjBbVnu4ZRNWRvMUr'
+    @@client_id = 4445461
+  end
+
+
 
   def initialize code = nil
     @acess_token_url = 'https://oauth.vk.com/access_token'
     @get_user_url = 'https://api.vk.com/method/users.get'
-    @secret = 'lTJhjBbVnu4ZRNWRvMUr'
+
     @code = code
     @errors = []
   end
@@ -39,7 +49,7 @@ class Vkontakte
       if @code
         args = {
           :client_id => @@client_id,
-          :client_secret => @secret,
+          :client_secret => @@secret,
           :code => @code,
           :redirect_uri => @@redirect_uri
         }
