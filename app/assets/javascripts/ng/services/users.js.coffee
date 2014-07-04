@@ -7,7 +7,9 @@ angular
 
     service =
       show: (id)->
-        console.log id
+        $http
+          .get "/users/#{id}.json"
+
 
       register: (email, password, confirm_password)->
         $http

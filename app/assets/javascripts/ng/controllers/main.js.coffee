@@ -22,4 +22,10 @@ angular
         if resp
           scope.current_user = resp
 
+    scope.$on 'event:unauthorized', ()->
+      growl.addErrorMessage 'Войдите, чтобы совершить действие'
+
+    scope.$on 'event:accessdenied', ()->
+      growl.addErrorMessage 'Доступ запрещен'
+
   ]

@@ -13,6 +13,3 @@
         %span.notification-label{'ng-if' => '!current_user.email_confirmed', 'ng-mouseover' => 'mouseover($event)' ,'ng-mouseleave' => 'mouseleave($event)', 'ng-click' => 'send_confirmation_email()'} не подтвержден
         {{ current_user.email }}
 
-      .attr-container
-        %span.attr-label События: 2
-        %a{:href => "#"} Все события

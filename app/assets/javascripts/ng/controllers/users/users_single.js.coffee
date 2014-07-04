@@ -3,6 +3,7 @@ angular
   .controller 'SingleUserCtrl', [
     '$scope', 'growl', '$location', 'User', 'Session', '$stateParams',
     (scope, growl, location, User, Session, stateParams)->
+      scope.events = 0
       if stateParams.verify_email_token
         User
           .verify_email stateParams.verify_email_token
@@ -18,6 +19,14 @@ angular
           .then ()->
             location.$$search = {}
             location.path '/profile'
+
+      Session
+        .requestCurrentUser()
+        .then (resp)->
+          unless resp
+            location.path '/sign_in'
+            growl.addErrorMessage 'Войдите, чтобы совершить действие'
+
 
       scope.update_errors = {}
 

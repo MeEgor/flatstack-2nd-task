@@ -4,33 +4,13 @@ class User < ActiveRecord::Base
 
   has_many :events, :dependent => :destroy
 
-  # Если вконтакте не привязан, то e-mail обязателен
-  validates :email, {
-    presence: true,
-    uniqueness: true,
-    :unless => :skip_password_validation
-  }
+  validates :email, presence: true, uniqueness: true
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
-  # Если вконтакте не привязан, то пароль обязателен
-  validates :password, {
-    presence: true,
-    :if => Proc.new { |user| !user.has_vk? },
-    :on => :create
-  }
-  # при создании пароль не обязателен, но если он есть, то должен быть не которким и подтвержденным
-  validates :password, {
-    length: { minimum: 5 },
-    # :on => :create,
-    :if => Proc.new { |user| !user.password.blank? }
-  }
-  # если есть пароль, то должно быть подтверждеие
-  validates :password_confirmation, {
-    presence: true,
-    :if => Proc.new { |user| !user.password.blank? },
-    # :on => :create
-  }
-  # если есть пароль, то подтверждение должно совпадать.
-  validates_confirmation_of :password, :if => Proc.new { |user| !user.password.blank? }
+
+  validates :password,  presence: true, length: { minimum: 5 }, :unless => :skip_password_validation
+  validates :password_confirmation, presence: true, :unless => :skip_password_validation
+  validates_confirmation_of :password, :unless => :skip_password_validation
 
   # если email есть, то dfowncase
   before_save { self.email = email.downcase if !email.nil? }

@@ -8,7 +8,7 @@ angular
     service =
       login: (email, password)->
         $http
-          .post '/sessions',
+          .post '/sessions.json',
             session:
               email: email
               password: password

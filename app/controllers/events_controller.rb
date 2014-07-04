@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
 
+  before_action :signed_in_user
+
   def day
     @events = current_user.events_at_day Date.parse params[:date]
     render 'day_success'
@@ -12,6 +14,7 @@ class EventsController < ApplicationController
 
   def show
     event = Event.find params[:id]
+    authorize! :show, event
     render :json => { success: true, event: event, info: 'event' }
   end
 
@@ -26,6 +29,7 @@ class EventsController < ApplicationController
 
   def update
     event = Event.find params[:id]
+    authorize! :update, event
     if event.update event_params
       render :json => {success: true, event: event, info: 'event updated'}
     else
@@ -35,6 +39,7 @@ class EventsController < ApplicationController
 
   def destroy
     event = Event.find params[:id]
+    authorize! :destroy, event
     if event.destroy
       render :json => {success: true, info: 'event deleted'}
     else
@@ -42,8 +47,14 @@ class EventsController < ApplicationController
     end
   end
 
-  def event_params
-    params.require(:event).permit(:name, :period, :started_at)
-  end
+  private
+
+    def event_params
+      params.require(:event).permit(:name, :period, :started_at)
+    end
+
+    def signed_in_user
+      render :json => {status: 'unath'}, status: 401 unless signed_in?
+    end
 
 end

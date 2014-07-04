@@ -5,7 +5,8 @@ app = angular.module 'MyCalendar', [
 app
   .config ['$httpProvider', ($httpProvider)->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
-    interceptor = ['$location', '$rootScope', '$q', ($location, $rootScope, $q)->
+
+    interceptor = ['$location', '$rootScope', '$q', 'growl', ($location, $rootScope, $q)->
       success = (resp)->
         resp
 
@@ -15,6 +16,11 @@ app
           $location.path '/sign_in'
           resp
 
+        if resp.status == 403
+          $rootScope.$broadcast 'event:accessdenied'
+          $location.path '/'
+          resp
+
       return (promise)->
         promise.then success, error
     ]
@@ -22,9 +28,7 @@ app
   ]
 
   .config ['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider)->
-
     $urlRouterProvider.otherwise("/")
-
     $stateProvider
       .state 'index',
         url:  '/'
@@ -42,7 +46,7 @@ app
         controller: 'SessionCtrl'
 
       .state 'profile',
-        url: '/profile'
+        url: '/profile?verify_email_token'
         templateUrl: 'templates/users/profile'
         controller: 'SingleUserCtrl'
 

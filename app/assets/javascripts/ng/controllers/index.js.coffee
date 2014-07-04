@@ -18,7 +18,8 @@ angular
       Event
         .at_day day.format "YYYY-MM-DD"
         .then (resp)->
-          scope.events = resp.data.events
+          if resp && resp.data.success
+            scope.events = resp.data.events
 
     scope.creation_errors = []
 

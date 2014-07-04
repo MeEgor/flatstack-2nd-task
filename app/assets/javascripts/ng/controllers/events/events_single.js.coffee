@@ -24,7 +24,6 @@ angular
               growl.addErrorMessage "Ошибка при обновлении события"
 
 
-
       Event
         .show stateParams.id
         .then (resp)->

@@ -6,6 +6,7 @@ ru:
           attributes:
             email:
               taken: "E-mail занят."
+              invalid: "Не верный формат E-mail"
       messages:
         blank: "Не может быть пустым."
         too_short: "Слишком короткий. Минимуи %{count} символов."

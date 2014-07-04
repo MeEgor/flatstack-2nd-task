@@ -6,7 +6,8 @@ class SessionsController < ApplicationController
     user = User.find_by_email params[:session][:email].downcase
     if user && user.authenticate(params[:session][:password])
       sign_in user
-      render :json => {:success => true, info: 'Logged in', user: current_user}, status: 200
+      @user = current_user
+      render :show_current_user
     else
       render :json => {:success => false, info: 'Log in failed', user: nil}, status: 200
     end

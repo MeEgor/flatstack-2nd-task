@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
+  before_action :signed_in_user, :only => [:edit, :update, :show, :destroy]
+
   def create
     @user = User.new user_params
     if @user.save
-      UserMailer.welcome_email(@user).deliver
+      # UserMailer.welcome_email(@user).deliver
       sign_in @user
       render 'create_success'
     else
@@ -11,6 +13,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = User.find params[:id]
   end
 
   def destroy
@@ -28,7 +31,7 @@ class UsersController < ApplicationController
 
   def send_verify_email
     user = User.find params[:id]
-    user.skip_password_validation = true
+    # user.skip_password_validation = true
     if user.send_confirm_email
       render :json => { :success => true, info: 'Verify email was sent' }, status: 200
     else
@@ -38,7 +41,7 @@ class UsersController < ApplicationController
 
   def confirm_email
     @user = current_user
-    @user.skip_password_validation = true
+    # @user.skip_password_validation = true
     if @user.confirm_email params[:token]
       render 'confirm_email_success'
     else
@@ -49,6 +52,7 @@ class UsersController < ApplicationController
 
   def change_password
     @user = User.find params[:id]
+    # @user.skip_password_validation = false
     if @user.change_password params[:user]
       render 'change_password_success'
     else
@@ -56,7 +60,12 @@ class UsersController < ApplicationController
     end
   end
 
-  def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :current_password, :name)
-  end
+  private
+    def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation, :current_password, :name)
+    end
+
+    def signed_in_user
+      render :json => {status: 'unath'}, status: 401 unless signed_in?
+    end
 end

@@ -17,7 +17,7 @@ node :user, :if => !@user do
 end
 
 node :info do
-  'current user'
+  'cuser'
 end
 
 node :success do
