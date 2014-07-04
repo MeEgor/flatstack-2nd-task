@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703140520) do
+ActiveRecord::Schema.define(version: 20140704162048) do
 
   create_table "events", force: true do |t|
     t.integer  "user_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140703140520) do
     t.datetime "updated_at"
   end
 
+  add_index "events", ["started_at"], name: "index_events_on_started_at"
   add_index "events", ["user_id"], name: "index_events_on_user_id"
 
   create_table "users", force: true do |t|
@@ -36,5 +37,9 @@ ActiveRecord::Schema.define(version: 20140703140520) do
     t.string   "email_confirmation_token"
     t.datetime "email_confirmation_token_expiration_date"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "users", ["vk_uid"], name: "index_users_on_vk_uid"
 
 end
