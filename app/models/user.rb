@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
 
   # если email есть, то dfowncase
   before_save { self.email = email.downcase if !email.nil? }
+  before_save { self.vk_uid.to_s }
   before_create :create_remember_token
   before_create :create_email_confirmation_token
 
