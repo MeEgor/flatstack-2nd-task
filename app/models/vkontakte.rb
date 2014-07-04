@@ -33,7 +33,7 @@ class Vkontakte
 
   def parse
     @user = {
-      :vk_uid => @row_data['uid'],
+      :vk_uid => @row_data['uid'].to_s,
       :name => "#{@row_data['first_name']} #{@row_data['last_name']}",
     }
     self
