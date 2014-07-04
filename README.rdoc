@@ -1,28 +1,17 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Второе тестовое задание для Flatstack
 
-Things you may want to cover:
+Использованные языки / технологии / фреймворки и т.д. :
 
-* Ruby version
+* Ruby -v 2.0.0, rails -v 4.1.1
 
-* System dependencies
+* coffeescript, haml, scss
 
-* Configuration
+* javascript фреймворк angularjs
 
-* Database creation
+Приложение представляет из себя одностраничный сайт на котором можно зарегестрироваться и добавлять события в свой календарь.
+Все переходы по сайту происходят без перезагрузки страницы (спасибо angularjs).
 
-* Database initialization
+Пользователь может редактировать свой профиль, управлять своими событиями, подтверждать e-mail
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
