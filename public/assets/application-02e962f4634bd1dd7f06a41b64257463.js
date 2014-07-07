@@ -47060,8 +47060,17 @@ angular.module('angular-growl').provider('growl', function () {
       var interceptor;
       $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
       interceptor = [
-        '$location', '$rootScope', '$q', 'growl', function($location, $rootScope, $q) {
-          var error, success;
+        '$location', '$rootScope', '$q', function($location, $rootScope, $q) {
+          var error, redirect_back, success;
+          redirect_back = function() {
+            var href;
+            href = $rootScope.$state.href($rootScope.$state.previous, $rootScope.$state.previousParams);
+            if (href) {
+              return $location.path(href.substring(1));
+            } else {
+              return $location.path('/');
+            }
+          };
           success = function(resp) {
             return resp;
           };
@@ -47073,7 +47082,12 @@ angular.module('angular-growl').provider('growl', function () {
             }
             if (resp.status === 403) {
               $rootScope.$broadcast('event:accessdenied');
-              $location.path('/');
+              redirect_back();
+              resp;
+            }
+            if (resp.status === 404) {
+              $rootScope.$broadcast('event:notfound');
+              redirect_back();
               return resp;
             }
           };
@@ -47110,6 +47124,10 @@ angular.module('angular-growl').provider('growl', function () {
       }).state('user_edit_password', {
         url: '/user/:id/password',
         templateUrl: 'templates/users/edit-password',
+        controller: 'SingleUserCtrl'
+      }).state('user_vk', {
+        url: '/user/:id/socials',
+        templateUrl: 'templates/users/edit-socials',
         controller: 'SingleUserCtrl'
       }).state('day', {
         url: '/{year:[0-9]{4}}/{month:0[1-9]|1[0-2]}/{day:0[1-9]|[12][0-9]|3[01]}',
@@ -47357,6 +47375,9 @@ angular.module('angular-growl').provider('growl', function () {
       scope.$on('event:accessdenied', function() {
         return growl.addErrorMessage('Доступ запрещен');
       });
+      scope.$on('event:notfound', function() {
+        return growl.addErrorMessage('Данные не найдены');
+      });
       return rootScope.$on('$stateChangeSuccess', function() {
         return Session.requestCurrentUser().then(function(user) {
           return scope.set_current_user(user);
@@ -47504,7 +47525,6 @@ angular.module('angular-growl').provider('growl', function () {
       scope.change_password = function() {
         return User.change_password(scope.user).then(function(resp) {
           if (resp && resp.data.success) {
-            scope.set_current_user(resp.data.user);
             scope.update_errors = {};
             growl.addSuccessMessage("Пароль успешно изменен.");
             return state.transitionTo('user', {
@@ -47519,7 +47539,6 @@ angular.module('angular-growl').provider('growl', function () {
       scope.create_password = function() {
         return User.create_password(scope.user).then(function(resp) {
           if (resp && resp.data.success) {
-            scope.set_current_user(resp.data.user);
             scope.update_errors = {};
             growl.addSuccessMessage("Пароль успешно создан.");
             return state.transitionTo('user', {
@@ -47528,6 +47547,24 @@ angular.module('angular-growl').provider('growl', function () {
           } else {
             scope.update_errors = resp.data.errors;
             return growl.addErrorMessage('Пароль не создан.');
+          }
+        });
+      };
+      scope.remove_vk = function() {
+        return User.remove_vk(scope.user.id).then(function(resp) {
+          if (resp && resp.data.success) {
+            growl.addSuccessMessage("Учетная запись отвязана.");
+            return state.transitionTo('user', {
+              id: scope.user.id
+            });
+          } else {
+            growl.addErrorMessage("Учетная запись не отвязана.");
+            angular.forEach(resp.data.errors.vk_uid, function(msg) {
+              return growl.addErrorMessage(msg);
+            });
+            return state.transitionTo('user', {
+              id: scope.user.id
+            });
           }
         });
       };
@@ -47669,6 +47706,9 @@ angular.module('angular-growl').provider('growl', function () {
           Session.currentUser = null;
           return resp;
         });
+      },
+      remove_vk: function(id) {
+        return $http.post("/users/" + id + "/remove_vk.json");
       }
     };
   });
