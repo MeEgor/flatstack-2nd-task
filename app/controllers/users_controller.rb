@@ -14,6 +14,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find params[:id]
+    authorize! :show, @user
   end
 
   def destroy
@@ -21,6 +22,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find params[:id]
+    authorize! :update, @user
     @user.skip_password_validation = true
     if @user.update_attributes user_params
       render 'update_success'
@@ -63,6 +65,15 @@ class UsersController < ApplicationController
       render 'change_password_success'
     else
       render :json => { :success => false, info: 'Password not created', errors: @user.errors }, status: 200
+    end
+  end
+
+  def remove_vk
+    user = User.find params[:id]
+    if user.remove_vk
+      render :json => { :success => true, :info => 'user vk_uid removed' }, status: 200
+    else
+      render :json => { success: false, info: 'error while removing user vkuid', errors: user.errors }, status: 200
     end
   end
 

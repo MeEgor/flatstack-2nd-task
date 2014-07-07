@@ -67,7 +67,6 @@ angular
           .change_password scope.user
           .then (resp)->
             if resp && resp.data.success
-              scope.set_current_user resp.data.user
               scope.update_errors = {}
               growl.addSuccessMessage "Пароль успешно изменен."
               state.transitionTo 'user', { id: scope.user.id }
@@ -81,7 +80,6 @@ angular
           .create_password scope.user
           .then (resp)->
             if resp && resp.data.success
-              scope.set_current_user resp.data.user
               scope.update_errors = {}
               growl.addSuccessMessage "Пароль успешно создан."
               state.transitionTo 'user', { id: scope.user.id }
@@ -89,6 +87,21 @@ angular
             else
               scope.update_errors = resp.data.errors
               growl.addErrorMessage 'Пароль не создан.'
+
+      scope.remove_vk = ()->
+        User
+          .remove_vk scope.user.id
+          .then (resp)->
+            if resp && resp.data.success
+              growl.addSuccessMessage "Учетная запись отвязана."
+              state.transitionTo 'user', { id: scope.user.id }
+
+            else
+              growl.addErrorMessage "Учетная запись не отвязана."
+              angular.forEach resp.data.errors.vk_uid, (msg)->
+                growl.addErrorMessage msg
+              state.transitionTo 'user', { id: scope.user.id }
+
 
       load_user()
 

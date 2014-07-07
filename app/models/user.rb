@@ -59,6 +59,20 @@ class User < ActiveRecord::Base
     !self.vk_uid.blank?
   end
 
+  def remove_vk
+    if !self.has_email? || !self.email_confirmed?
+      errors.add(:vk_uid, "Чтобы отвязать учетную запись вам нужен подтвержденный e-mail.")
+      return false
+    end
+
+    if !has_password?
+      errors.add(:vk_uid, "Чтобы отвязать учетную запись вам нужно сначала создать пароль.")
+      return false
+    end
+
+    self.update_attribute :vk_uid, nil
+  end
+
   def has_email?
     !self.email.blank?
   end

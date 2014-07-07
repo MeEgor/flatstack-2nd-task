@@ -24,6 +24,9 @@ angular
     scope.$on 'event:accessdenied', ()->
       growl.addErrorMessage 'Доступ запрещен'
 
+    scope.$on 'event:notfound', ()->
+      growl.addErrorMessage 'Данные не найдены'
+
     rootScope.$on '$stateChangeSuccess', ()->
       Session
         .requestCurrentUser()

@@ -7,3 +7,6 @@
 
   %li{'ng-class' => '{ active : $state.current.name == "user_edit_password" }'}
     %a{'ui-sref' => "user_edit_password({ id: current_user.id })"} Смена пароля
+
+  %li{'ng-class' => '{ active : $state.current.name == "user_vk" }'}
+    %a{'ui-sref' => "user_vk({ id: current_user.id })"} Вконтакте

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post '/users/confirm_email/:token' => 'users#confirm_email'
   post '/users/:id/change_password' => 'users#change_password'
   post '/users/:id/create_password' => 'users#create_password'
+  post '/users/:id/remove_vk' => 'users#remove_vk'
 
   # сесии
   resources :sessions, :only => [:create]

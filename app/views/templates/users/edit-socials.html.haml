@@ -1,0 +1,17 @@
+.contaiber
+  .row
+    .col-lg-offset-3.col-lg-6
+      = render 'shared/user_profile_header'
+
+      %h2 Учетная запись Вконтакте
+
+      %div{ 'ng-if' => 'user.has_vk' }
+        У вас имеется учетная запись вконтакте.
+        %button.btn.btn-warning{ 'ng-click' => 'remove_vk()' }
+          Отвязать
+
+      %div{ 'ng-if' => '!user.has_vk' }
+        Учетная запись Вконтакте не привязана.
+        Войдите на сайт, используя учетную запись Вконтакте.
+
+

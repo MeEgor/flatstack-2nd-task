@@ -6,7 +6,14 @@ app
   .config ['$httpProvider', ($httpProvider)->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
 
-    interceptor = ['$location', '$rootScope', '$q', 'growl', ($location, $rootScope, $q)->
+    interceptor = ['$location', '$rootScope', '$q', ($location, $rootScope, $q)->
+      redirect_back = ()->
+        href = $rootScope.$state.href $rootScope.$state.previous, $rootScope.$state.previousParams
+        if href
+          $location.path href.substring(1)
+        else
+          $location.path '/'
+
       success = (resp)->
         resp
 
@@ -18,7 +25,12 @@ app
 
         if resp.status == 403
           $rootScope.$broadcast 'event:accessdenied'
-          $location.path '/'
+          redirect_back()
+          resp
+
+        if resp.status == 404
+          $rootScope.$broadcast 'event:notfound'
+          redirect_back()
           resp
 
       return (promise)->
@@ -58,6 +70,11 @@ app
       .state 'user_edit_password',
         url: '/user/:id/password'
         templateUrl: 'templates/users/edit-password'
+        controller: 'SingleUserCtrl'
+
+      .state 'user_vk',
+        url: '/user/:id/socials'
+        templateUrl: 'templates/users/edit-socials'
         controller: 'SingleUserCtrl'
 
       .state 'day',

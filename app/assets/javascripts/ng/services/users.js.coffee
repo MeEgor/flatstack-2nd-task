@@ -46,6 +46,10 @@ angular
             Session.currentUser = null
             resp
 
+      remove_vk: (id)->
+        $http
+          .post "/users/#{id}/remove_vk.json"
+
 
 
 
