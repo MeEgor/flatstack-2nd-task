@@ -3,6 +3,8 @@ angular
   .module 'MyCalendar'
   .controller 'SessionCtrl', [ '$scope', 'Session', 'growl', (scope, Session, growl)->
 
+
+
     scope.user =
       email: null
       password: null

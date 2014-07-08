@@ -46,7 +46,12 @@ class SessionsController < ApplicationController
     u = Vkontakte.new params[:code]
     u.load
     user = User.find_by_vk_uid u.uid.to_s
-    if user
+
+    if current_user
+      # Привязать учетку
+      current_user.update_attribute :vk_uid, u.uid.to_s
+      redirect_to "/#/user/#{current_user.id}/socials"
+    elsif user
       # войти
       sign_in user
       redirect_to root_path
@@ -58,7 +63,7 @@ class SessionsController < ApplicationController
       user.skip_email_validation = true
       if user.save
         sign_in user
-        redirect_to root_path
+        redirect_to "/#/user/#{user.id}"
       else
         redirect_to root_path
       end
